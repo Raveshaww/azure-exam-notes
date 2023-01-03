@@ -17,4 +17,5 @@ Working through John Savill's DevOps Master Class and some additional material v
     - This requires someone to check out files in order to work on it, creating a lock on those files
 - Git is distributed, since all devs have a copy of all files
     - You sync with the remote origin
+- `git config` allows you to change some attributes, like `user.name`
 - 
