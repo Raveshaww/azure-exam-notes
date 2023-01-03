@@ -12,3 +12,4 @@ Working through John Savill's DevOps Master Class and some additional material v
 - Kanban is always in motion
 - Pull when you have space
 - Self-service is key to agility
+### Mastering Git
