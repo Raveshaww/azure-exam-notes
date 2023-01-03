@@ -18,4 +18,13 @@ Working through John Savill's DevOps Master Class and some additional material v
 - Git is distributed, since all devs have a copy of all files
     - You sync with the remote origin
 - `git config` allows you to change some attributes, like `user.name`
+- You can change the default branch name by the following:
+    - `git config --global init.defaultBranch main`
+- All objects in git end up stored as a blob
+- All blobs have a hash (sha1)
+- This hash is used to find changes
+- A tree has a file name, and uses a file pointer to point to the blob
+- A commit is a snapshot of the entire repo which points to a certain tree, and contains additional metadata like author and date
+- `git init` created a `.git` subfolder
+    - this has an `objects` folder
 - 
