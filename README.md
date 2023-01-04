@@ -27,4 +27,14 @@ Working through John Savill's DevOps Master Class and some additional material v
 - A commit is a snapshot of the entire repo which points to a certain tree, and contains additional metadata like author and date
 - `git init` created a `.git` subfolder
     - this has an `objects` folder
-- 
+- You have a head for each branch
+- The `HEAD` file points to the branch in use
+- The `working directory` is where you actually work with the file
+- You may not always want everything you're working on to go into the next commit, so you can instead `stage` or `index` these changes
+    - This is `git add`
+- A blob is created when something is staged
+- To push to the repo, you use `git commit -m "test thing"`
+- You can remove something from staging with `git rm`
+    - This is staged, and requires a commit to actually delete from the repo (but not the history)
+- To not remove from working, `git rm --cached`
+
