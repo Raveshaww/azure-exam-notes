@@ -39,3 +39,5 @@ Working through John Savill's DevOps Master Class and some additional material v
 - To not remove from working, `git rm --cached`
 - Sometimes you want to keep track of the history introduced by a branch.
     - In this scenario, you can simple merge without fast-forwarding via `git merge --no-ff`
+- Rebase is like updating your branch based on the current version of main
+    - Never rebase a public branch
