@@ -72,3 +72,15 @@ Working through John Savill's DevOps Master Class and some additional material v
 - If you're in a GitHub organization, you have an option to use a GitHub codespace
     - This is not free
 - In GitHub organizations, you can have an "internal" repo
+- Public repos in GH have the following for free:
+    - Dependancy graph
+    - Dependabot alerts
+    - Dependabot security updates
+    - Code scanning
+- You can have self hosted GitHub Action runners
+- GHA is all YAML
+- GHA is any event, and not just CI/CD
+- GHA can let you designate a release branch
+- An ADO artificat is like a .exe
+- Github calls this a package
+- ADO lets you build dashboards to help visualize progress
