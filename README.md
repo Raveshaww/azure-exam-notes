@@ -1,5 +1,5 @@
 # Preface
-Working through John Savill's DevOps Master Class and some additional material via Microsoft Learn
+Working through John Savill's DevOps Master Class, A Cloud Guru, and some additional material via Microsoft Learn. The overall structure of the notes, however, are more based off of Savill's playlist.
 
 # Notes
 ### Foundation
