@@ -6,6 +6,7 @@ Working through John Savill's DevOps Master Class, A Cloud Guru, and some additi
 - Things like patching OS and whatnot don't really bring value to the org, hence why they tend to be avoided in DevOps
 - SCRUM always contains **only** pull motions
 - SCRUM contains sprints, which are a fixed duration of work
+    - User stories, bugs, and tasks are in sprints
 - SCRUM can use kanban boards, but they assign points to each item of work
     - Instead of WIP limits, they use point limits
 - Generally, team sizes do not pass what you can feed with 2 pizzas
@@ -13,7 +14,7 @@ Working through John Savill's DevOps Master Class, A Cloud Guru, and some additi
 - Pull when you have space
 - Self-service is key to agility
 ### Mastering Git
-- Centralized source control is generally not used anymore. 
+- Centralized source control is generally not used anymore. This can be called `TFVC`
     - This requires someone to check out files in order to work on it, creating a lock on those files
 - Git is distributed, since all devs have a copy of all files
     - You sync with the remote origin
@@ -73,7 +74,7 @@ Working through John Savill's DevOps Master Class, A Cloud Guru, and some additi
     - This is not free
 - In GitHub organizations, you can have an "internal" repo
 - Public repos in GH have the following for free:
-    - Dependancy graph
+    - Dependency graph
     - Dependabot alerts
     - Dependabot security updates
     - Code scanning
@@ -81,6 +82,33 @@ Working through John Savill's DevOps Master Class, A Cloud Guru, and some additi
 - GHA is all YAML
 - GHA is any event, and not just CI/CD
 - GHA can let you designate a release branch
-- An ADO artificat is like a .exe
+- An ADO artifact is like a .exe
 - Github calls this a package
+### ADO Boards from ACG
 - ADO lets you build dashboards to help visualize progress
+- ADO is the rebrand of Visual Studio Team Services
+- ADO project hierarchy is:  
+    - Organization > team project > team
+- Team projects should be considered as impassible security boundaries 
+- The advice is to create as few team projects as possible, ideally only one 
+- There are four different type of work item processes in ADO
+    - `agile` is pretty straightforward
+    - `scrum` means that instead of `user stories` you have `pbi`
+    - `cmmi` is not as well known, but the third level of work is a `requirement`
+    - `basic` is only epic, issues, and tasks. Somewhat similar to GitHub?
+- A basic user has access to all services except for `test plans`, and the first 5 are free
+- Stakeholder licenses do not have access to source control, and are generally only for work management
+- Area paths are used to associate work items with product areas
+    - Backlogs are built from one or more area paths
+- Iteration paths are like sprints
+- You can set up different workflows to work items with the type of bugs
+    - They can contain tasks, and be added to iterations
+- You can only have one backlog per team
+- When all tasks under a story are done, the story is **not** automatically marked as done
+- Bugs are not enabled by default
+### ADO Repos from ACG
+- ADO supports TFVC
+- GitHub flow is what Savill described
+- GitFlow allows for more parallel feature development, but is otherwise the same as the above (three way merges galore)
+- Trunk based development doesn't use any branch
+- You can only have one TFVC repo, but you can have as many git repos as you want per ADO Project
