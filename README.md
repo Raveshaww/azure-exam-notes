@@ -112,3 +112,24 @@ Working through John Savill's DevOps Master Class, A Cloud Guru, and some additi
 - GitFlow allows for more parallel feature development, but is otherwise the same as the above (three way merges galore)
 - Trunk based development doesn't use any branch
 - You can only have one TFVC repo, but you can have as many git repos as you want per ADO Project
+### CI/CD
+- Ideally, you have test cases and develop with those test cases to make sure you haven't broken anything
+- An artifact could be an image, a dockerfile, a zip folder, etc
+- You trigger CI on some sort of event, like a commit or a pull request
+- A CI pipeline can handle dependency prep before building code
+- It then runs automated tests
+    - A failure can be configured to go and create a work item
+- If it passes all the tests, it can create an artifact
+- The end result will be that the artifact gets uploaded to some registry
+- You could optionally create a release under certain conditions, like if it was off of main
+- It's common for the upload of the artifact to be the trigger for a Continuous delivery pipeline
+- Continuous delivery is **not** the deployment of the code
+- Continuous deployment is the automated deployment of code to prod
+- For CDel, you would have gates between each stage to progress it through the pipeline
+- Ideally, you build each environment with IaC
+- It is extremely important that all environments are consistent with production, but not necessarily equal
+- Blue / green is basically two environments, and you only deploy to one environment and you start slowly moving people from one to the other
+- Pools are the agents that you are going to use in a pipeline
+- Stages will run sequentially unless specified otherwise
+- You can tie gates to environments rather than something on the pipeline itself
+- Microsoft-hosted agents are ephemeral, but things within the same stage can access the same files
