@@ -133,3 +133,10 @@ Working through John Savill's DevOps Master Class, A Cloud Guru, and some additi
 - Stages will run sequentially unless specified otherwise
 - You can tie gates to environments rather than something on the pipeline itself
 - Microsoft-hosted agents are ephemeral, but things within the same stage can access the same files
+- You can use the DevOps generator site to play around with ADO
+    - `https://azuredevopsgeneratore.azurewebsites.net`
+- GHA live in the `.github/workflows/` folder in your repo
+- ADO agents and GHA runners don't make inbound connections from the internet to facilitate running on local VMs
+- Actions are written in either JS or in a container
+    - Think of it like YAML being the front end for Ansible's python backend
+- You can set up matrixes to handle multiple different environments in one run (Both ADO and GHA)
