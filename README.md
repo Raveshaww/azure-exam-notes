@@ -1,6 +1,5 @@
 # Preface
-Working through John Savill's DevOps Master Class, A Cloud Guru, and some additional material via Microsoft Learn. The overall structure of the notes, however, are more based off of Savill's playlist.
-
+Working through John Savill's DevOps Master Class, A Cloud Guru, and some additional material via Microsoft Learn. 
 # Notes
 ### Foundation
 - Things like patching OS and whatnot don't really bring value to the org, hence why they tend to be avoided in DevOps
@@ -140,3 +139,25 @@ Working through John Savill's DevOps Master Class, A Cloud Guru, and some additi
 - Actions are written in either JS or in a container
     - Think of it like YAML being the front end for Ansible's python backend
 - You can set up matrixes to handle multiple different environments in one run (Both ADO and GHA)
+### Analyzing Metrics
+- `Azure Monitor` is a central hub for all info about infra, apps, and other Azure resources
+    - This can be stored in two ways, `metrics` and `logs`
+- You can use this to visualize and create dashboards
+- You can also use this to create alerts
+- You can also set up automated actions to automatically take action on alerts
+- `Application insights` can track things like
+    - request/failure rates
+    - response times
+    - page and user info
+    - app exceptions
+    - app dependencies 
+    - performance info
+- This is what Tomi used to set up URL ping tests
+- For url/ping tests, you can change the status code that its expecting, or something the content must contain
+- Failure mode analysis tries to find points of failure
+    - Rates the risk and severity
+    - Determine response (how the application will respond)
+- You need to understand the application and the environment it's in
+- You also need to understand the SLAs
+- Is it critical?
+- Is anything dependent on it?
