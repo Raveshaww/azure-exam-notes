@@ -161,3 +161,36 @@ Working through John Savill's DevOps Master Class, A Cloud Guru, and some additi
 - You also need to understand the SLAs
 - Is it critical?
 - Is anything dependent on it?
+- Implement fault domains where possible
+    - Like where resources are hosted within a Data center (Availability Zones, for an example)
+    - Cross region, or Azure Site Recovery
+    - Autoscaling
+- Why create a baseline
+    - We can use a baseline to define what a healthy state is
+- How do we create a baseline
+    - Log Analytics and Metrics Explorer
+    - Azure Monitor Insights
+    - App Insights
+- Azure Monitor Insights
+    - It requires at least 8 days of telemetry at a sufficient volume to establish a baseline for performance
+- Dynamic Threshold Advantages
+    - The use ML to identify patterns and trends to help find anomalies 
+    - Less manual work
+    - Set it and forget it
+- App Insights Smart Detection
+    - Uses ML to analyze telemetry to detect anomalies
+    - Tries to figure out why it's going wrong
+    - It's built in, and requires no config
+- Smart Detection Categories
+    - It will calculate the expected number of failures, and alert should it reach a threshold
+    - It will monitor and send alerts in real time
+    - The alerts will actually provide context
+    - In the case of failures, it needs 24 hours worth of data to start
+- Failure rates are considered an alert
+- App Insights Dependency Tracking
+    - It can track and monitor calls to dependencies
+    - It features automatic tracking with .net and .net core applications
+    - You can also track AJAX calls
+    - It will also automatically track HTTP and HTTPS calls, Azure storage calls, sql calls, eventhub client, and servicebus sdk
+- Application dependencies on VMs
+    - You first need to enable the agent
