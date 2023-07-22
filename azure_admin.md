@@ -37,13 +37,13 @@ Rough notes from when I took Azure Admin exam
 - Tables are really about key values
 - Tables are broken into partitions
 - There are two types of SAS keys: service and account
-- Account lets you access many storage accounts
-- Service is just a single SA
+    - Account lets you access many storage accounts
+    - Service is just a single SA
 ### Networking
 - Vnets can’t have multiple address spaces if already peered
 - Subnets naturally span AZ
 - X.x.x.2 and x.x.x.3 are always reserved for DNS purposes
-- In other words, you always lose 5 addresses in a subnet in Azure
+    - In other words, you always lose 5 addresses in a subnet in Azure
 - OS use DHCP, Azure assigns the IP
 - You cannot have two nics in different vnets, but you can in different subnets
 - You always need IPv4 addresses
@@ -73,14 +73,14 @@ Rough notes from when I took Azure Admin exam
 - Azure Stack Hub is kinda like a mini on-prem Azure. It doesn’t do everything Azure does, but it’s consistent with what Azure does
 - SAP HANA has a special bare metal config
 - By default, VMSS will overprovision in case of failure when provisioning, but it doesn’t incur cost while it’s doing this
-- This can be disabled
+    - This can be disabled
 - During the scale in process, you can set up something for a termination notification. 
-- This can be used to automate processes like removing the VM from a domain
+    - This can be used to automate processes like removing the VM from a domain
 - You can protect specific VMs in a scale set scale in or all scale set actions
 - You can move a VM to a new subscription if you move all of the related networking resources
 ### Application services
 - Cgroups = controller groups
-- Decides what a container can use
+    - Decides what a container can use
 - If two container images share the same “layer” as part of its container, it will only be stored once
 - Hyper v containers contain an isolated kernel
 - Azure container services is more for burst scenarios or basic workloads
