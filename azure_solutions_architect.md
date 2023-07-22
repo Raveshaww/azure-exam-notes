@@ -1,0 +1,461 @@
+# Azure Solutions Architect
+Rough notes from when I was going to take Azure Solutions Architect Exam
+### Azure Fundamentals:
+- Azure Account Hierarchy
+    - Azure Enterprise
+    - Departments
+    - Accounts - This is where you start if you don't have an enterprise agreement
+    - Subscriptions
+    - Resource Groups - Kind of like separate environments
+    - Resources
+- Management groups let you group up resource groups for wholesale configuration and etc
+- Cost Analysis provides robust reports on how your cloud resources are generating costs
+- Tags can be assigned to resource group or resource, but you’re only allowed 15 tags
+- Tags follow a key-value pair
+- Can be used for automation
+- Requesting more resource limits (quotas) is similar to AWS
+- Free trial will create its own subscription for you to use
+- Azure Active Directory to create users in the default directory
+- Billing alarms can be set at the subscription level
+- This is done on the accounts page
+- You have to enable the Billing Alert Service for your account
+- You can add up to 5 alerts
+- Subscription policies are like GPO for subscriptions
+- You can define the scope, and include exclusions
+- Policies are JSON templates
+- For an example, you can limit the type of VM’s you can provision 
+- Management groups let you apply these policies to a group of subscriptions at once
+- Metadata for a resource group is determined by the region selection when deploying a resource group
+- You can add role assignments at the resource group level in addition to the subscription level
+- Resource costs can help you easily find what is costing you money
+- Deployments will describe how each resource was deployed
+- Automation scripts can be used to download the template for all of the resources in the resource group
+- You can move resources from group to group without reallocating resources, but there are some resources you are not able to move.
+### Analyze Resource Utilization and Consumption
+- Metrics are numerical values available from Azure Resources to understand health
+- Logs are activity logs, diagnostic logs, telemetry, and queries to troubleshoot and visualize
+- Alerts notify of critical conditions and potentially automatically take action
+- Can be accessed at the VM level rather than in the Monitor service section via metrics
+- You can add a metric view to your dashboard
+- A lot of services have pre-canned metric charts for you to use
+- In Monitor you can create rule-based alerts
+- Scope > condition > action groups (who gets notified and how)
+- ITSM is useful for creating tickets in a ticketing system via integration
+- Runbook is like a script to help handle the situation automatically
+- You can set the severity on the alert
+- You can enable guest-level metrics for all sorts of Windows logs and etc 
+- You decide where those logs get stored
+- Log Analytics is the central role in monitoring
+- Data sources are things you can connect Log Analytics to
+- Search Queries to find data
+- As data comes into the data source, it forms tables
+- Think of it like a giant Database that you get to query
+- You can combine each type of log, kind of like tables
+- Search Query Fundamentals
+- Start with the event table
+- Follow with a series of operators
+- Separate out additional operations by using pipe |
+- Join other tables and workspaces using “union”
+- You have to provision a LogAnalytics workspace, kind of like a VM or other managed service
+- You can automatically install monitoring agents via policies in the security center
+- If you go to Azure Activity Log to gather logs from a subcription
+- In advanced settings > data you can define what data you capture
+- Analytics view is better for more advanced multi-line queries
+- Log Search view is better for basic queries and learning
+- Search * pulls all of the collected data
+- You can then filter down to the type of info that you want, such as performance logs
+- Perf would pull everything from the Perf table
+- Heartbeat | where Computer == ‘WindowsVM01” would pull the results for that vm
+- Case sensitive, but intellisense is built in
+- Heartbeat | where Computer == “WindowsVM01” | where TimeGenerated > ago(1d) would pull all the results within the last day
+- EVENT | where EventId  == 35 would pull all the event ID 35 results
+- Perf | where TimeGenerated > ago(1d) | where CounterName == @”% Processor Time” will query all of the processor time
+- Perf | where TimeGenerated > ago(1d) | where CounterName == @”% | summarize avg(CounterValue) by Computer,bin(TimeGenerated, 15m) | render time chart would render this - data as a time chart in 15 minute intervals 
+- View Designer lets you build dashboards for logs
+- OMS portal will take you to an overview portal that is useful for things like a support monitor
+- Solutions gallery is like a market place to grab and go for log analysis 
+- Alerts can be created based on results of queries 
+- Users will get notified when they are part of an action group
+### Create and configure Storage Accounts
+- Storage account > container > blob - binary large objects like pictures or video
+- Three versions, GPV1, Blob Account, GPV2
+- GPV2 is the main one you will use since you can use paged blobs 
+- Block bobs are ideal for text or binary data
+- A single block blob can contain up to 50,000 blocks of 100mb each for a total of 4.75tb
+- Append blobs are optimized for append operations, like logs
+- Page blobs are best for read/write operations, used by Azure VM’s and can be up to 8tb in size
+- Storage tiers
+- Hot for frequently accessed, high storage, low access cost
+- Cold storage for infrequently accessed, lower storage costs, higher access costs, intended to be cool for 30 days or more
+- Archive for lowest storage costs, highest retrieval costs, when in archive it cannot be read right away. Data needs to be rehydrated
+- Possible to move from hot to cold and vice versa, but you get penalized
+- Blobs are for large amounts of objects, access from anywhere
+- Files for access from multiple machines, like a jumpbox
+- Disks are like disks in a lift and shift scenario, associated with a VM
+- Blob names are globally unique
+- In gpv2, you can set a default access tier
+- Standard is for hdd, premium for ssd
+- LRS - 3 copies in the same data center
+- ZRS - 3 copies in data centers in the same region
+- GRS - 6 copies globally
+- RA-GRS - 6 copies globally, where you can read from the other locations
+- You can enforce secure transfer for encryption 
+- You can enable or disable internet exposure via virtual networks
+- Via powershell - create a resource group with 
+- New-AzureRMStorageAccount -ResourceGroupName $resourcegroupname -Name “storagename” -Location “northcentralus” -SkuName Standard_LRS -Kind Storage
+- You can upgrade from GPV1 to GPV2
+- Storage Explorer allows you to view your storage account data via your desktop os
+- Az Copy is a cmd line tool to help you copy files to or from a storage account
+- Can copy the exe to a folder on C: to update your environment variables to recognize it in the path variable
+- You will need to specifically give access to a storage blob by account to access data
+- Storage containers are private by default
+- Blob means that there is anonymous read access for blobs only while container means that containers and blobs can read 
+- Shared Access Signatures is a query string that we add onto the url of a storage resource that informs azure to grant certain access
+- There are account SAS tokens and service SAS tokens
+- All SAS is encrypted 
+- Here is how the token breaks down
+- Stored access policies is a method for controlling SAS in groups, but is only supported on service sas 
+- You can create SAS tokens from Storage explorer
+- Key Vault allows you to storage keys in a secure location
+- You can use custom domains for storage accounts
+- Azure Import/Export helps you migrate data to azure via disks
+- Also helpful for content distribution
+- On-prem backups
+- Recovery from backup on prem
+- There is a cmd line tool and a online portal
+- V1 of the tool is for blob, v2 for files
+- Business Continuity strategies
+- High availability - fault tolerant
+- Disaster recover - if failure occurs, secondary resource starts and grabs stuff
+- Backup - restore data 
+- Azure Backup provides unlimited scaling, data transfer
+- Multiple storage options / redundancy 
+- MARS agent allows for file level restore
+- Systems Center DPM and Azure Backup Server for data protection manager
+- IaaS VM Backup
+- There is Snapshot recovery which work like AWS, but can be copied to other regions
+- Geo-Replication allows you to use GRS to replicate to a different region
+- You can use this to restore an on-premises server or from Azure
+- You can create a backup policy, or use a buiilt in one
+- Frequency, times, retention, time zones, weekly backup points, monthly, yearly
+- You can choose to just restore disks and not the VM itself
+- You can use the same back up to do one by one fire recovery
+- MARS agent lets you do a file level recovery from a local machine
+- You’ll need to download vault credentials to register the server to the vault, and those will expire after two days but are needed for the install
+- Backups are encrypted
+### Create and Configure Virtual Machines
+- ACU are used to benchmark the performance of CPU’s for instance types
+- V3 instances tend to be hyperthreaded
+- You can bring your own images
+- Region pairs exist for the reasons of patching. Not all regions in a pair will be patched at the same time
+- Availability sets are in the same DC, but two separate racks
+- By default, no ports are open
+- You can attach a blob / image as a data disk for files to be there ahead of time
+- Some machines and OS’ allow for accelerated networking, making sure network performance was better machines
+- Enable auto-shutdown is right on the VM
+- Guest config for things like chef
+- Get-AzureRMRemoteDesktop file -ResourceGroupName group -Name vmname -Launch will launch an RDP window
+- WinRMHttps, ssl over 5986
+- WinRMHttp no ssl but over 5985
+- Need a key vault, self signed cert, uploaded cert to key vault, get the url for the cert from KV, reference whenever you create vm
+- When creating a linux instance, you can define an SSH key
+-  Standard storage max 60mbs or 500 IOPS per disk
+- SSD is 250mbs or 7500 per disk
+- You have to choose model of disk, not custom amount
+- Larger SSD’s have more IOS or speed
+- 500gb drive would have 5x the performance of our AWS hard drives
+- Unmanaged disks are DIY, gotta stay under 20k IOPS per storage account. Supports all replication modes
+- Managed disks has Azure manage disks, but only supports LRS
+- LRS is logically replicated storage. Replicated three times in a data center in the same region as the storage account
+- ZRS is zone replicated storage
+- GRS is geographically replicated storage
+- RA-GRS is the same but with read access
+- Only GRS has 6 copies
+- You can type in a disk size, but it will pick the underlying correct disk
+- Disk Caching will improve the performance of VHD
+- Uses local ram and SSD on underlying host
+- Available on standard and premiumn disk
+- Read-only caching improves latency and may gain higher IOP{S
+- Read-write means you have a proper way to write data from cache to persistent disk
+- May need to turn on host caching in pwsh
+- Set-AzureRMVMDataDisk -VM vm - Name datadisk -Caching ReadWrite | Update-AzureRMVM
+- DNS settings can be set at the virtual network level
+- Fault domains are separate sets of hardware. Kind of like an entire rack, networking hardware, etc
+- These are useful when considering Availability sets
+- Update domains are subsets of fault domains so that updates can occur across a rack gradually
+- Up to 3 fault domains
+- Up to 20 update domains
+- To add an availability set to a load balancer, you add it as a backend pool 
+- Scale sets allow you to scale out VM
+- Scale out on metrics or schedule
+### Azure Virtual Networking
+- Vnet is kind of like AWS VPC
+- You can have subnets in a vnet
+- Vnets are isolated from one another, and provide internet access, allow us to connect multiple Azure resources
+- Can provide on prem connectivity, traffic filters, and provides routing capabilities
+- Can bring our own DNS or use Azure DNS
+- You can force subnets to only host one type of service
+- All IP are provided by Azure DHCP
+- Addresses are not allocated until Azure Object is created
+- Addresses are recovered when object is deallocated
+- Static addresses are DHCP reservations
+- Azures reserves the first three and last IP from the pool
+- Azure Private DNS Zones allows you to link vnets for DNS 
+- For VM’s, you can enable auto-dns-registration upon creation
+- You can manually create a DNS record, may be needed for managed services
+- Static Public IP need to be manually provisioned
+- All other routes need to be defined manually
+- One route tablet can be used for several vnet and subnet
+- You can allow forwarded traffic. IE traffic that for subnet a that was supposed to go from subnet a, but came in from subnet b from the internet. Pseudo transitive
+- Gateway transit lets the peered vnet use the one gateway
+- Remote gateway lets this vnet use the others gateway
+- Network security groups can be applied at subnet or NIC level
+- You can set priorities on rules
+- You can use tags to designate what rules take effect. I.e. something that uses the internet uses certain rules
+- Site to site is a regular VPN, ExpressRoute is the more mature version that requires a dedicated circuit.
+- Point to site is like, a laptop to azure
+- P2S uses SSTP, only really supports windows. Throughput to 100mbps
+- Express Route provides Layer 3 Connectivity
+- Connectivity in all regions
+- Dynamic routing
+- Built in Redundancy
+- Unlimited or metered data plan
+- In order to use Network Watcher, you need to install an agent in each machine via an extension in the portal
+- You enable the watcher by region in each sub
+- Can make a network topology
+- Connection monitor lets you check connections between two machines
+- IP Flow verify lets you make sure a packet is allowed or denied by a vm
+- Security group view shows effective rules
+- VPN connection tools are provided
+- Packet capture
+- You can use 3rd party load balancers with azure
+- App gateway is good for webapps
+- Basic load balancer is layer 4, supports 100 instances, service monitor to manage traffic, automated reconfiguration for scaling in or out
+- Internal or public options
+- Standard load balancer is layer 4, 1000 instances, any vm in a single vnet, https support, az support, secure by default
+- App gateway is layer 7 for application load balancing
+- Cookie based session affinity
+- SSL offload
+- Web application firewall
+- URL based content routing
+- Requires its own subnet
+- Highly available
+### Managing and Securing Identities
+- Three major options in azure for domain services
+- Azure AD (AAD) is the first choice for develop new services
+- Creates a single identity for users and keeps them in sync
+- SSO
+- MFA
+- Self service portals
+- Often the same as an O365 directory service
+- Can sync with on-prem AD
+- It’s in “Azure Active Directory” in Azure
+- An example of an initial domain name is like routeware.onmicrosoft.com
+- By default, new accounts / directories don’t have access to resources
+- Subscriptions can only be tied to one domain / directory
+- There are role and administrator created automatically that you can use
+- Gmail users can be a guest user
+- RBAC is used to grant access to groups or users
+- P2 premium is required for self service portal
+- You can define how they need to reset their password, and what services they can use
+- You can require users to register when signing in and how often they have to reconfirm their authentication information
+- You can set up notifications around password resets
+- You can customize the helpdesk link
+- Refer to https://azure.microsoft.com/en-us/pricing/details/active-directory/ for details on each version
+- Active Directory Domain Services - runs on a server VM, kinda like on prem
+- Windows server with AD, traditional kerberos and ldap, usually on a VM
+- Azure Active Directory Domain Services - managed version of ADDS
+- Allows to consume domain services without the need to patch and maintain domain controllers
+- Domain join, gpo, ldap, kerberos, ntlm is supported
+- Azure AD connect helps you sync your on prem ad server with aad, helps ADFS, and health monitoring
+- By default only certain things are sync’d
+- Passwords are synced by hash
+- Password writeback will help sync from the cloud
+- Prevent accidental deletes
+- AD connect is a seperate download that you then install on the on-prem server
+- If you only have one forest, you can use express settings
+- You set an Azure user as a global admin
+- AADDS lets you get more legacy features for applications that may not work with ads
+- Recommended that you put aadds in its own subnet
+- You will be provided dns servers that you need to add to your virtual network
+- B2C is like when you log into an account via Google, for an example
+- B2B allows you to collab with partners outside of org
+- Users receive email with confirmation link
+- Counted as Azure AD External User Objects
+- Access to shared apps, resources, documents, etc
+- Partners access with their own credentials
+- Privileged Identity Management
+- Users get temporary increased privileges to complete a single task, and then get scaled back
+- Goal is to manage a privileged user, giving them abilities while also giving visibility to who has that access and what they can access, and what they have accessed - and changed. 
+- And require approvals via workflows
+- PIM requires an activation process, such as MFA or approval
+- Needs a p2 license, not all users need it though. Just users who need the privileged roles
+- Users need a location, and a p2 license assigned to them 
+- User requests access via going to PIM and clicking activate
+### Create and Deploy Apps
+- Consists of web apps, mobile apps, logic apps, and api apps
+- Web apps were formally websites, build and host apps that are highly available and auto-scalable
+- Mobile apps build a mobile device backend, highly scalable, highly available, native apps for all platforms. Shares the same app service deployment to reduce run rates
+- Logic apps to automate business processes and workflows: example every time an app calls an api, do a task
+- API to easily create and consume api’s. Both custom and external, and Azure
+- Features run in isolated VM
+- ISO, SOC, and PCI compliant
+- Fully integrated AAD
+- Managed service identity to allow app to easily access other Azure resources
+- Custom domains, ssl/tls, custom certificates
+- Multiple auth protocols
+- Integrates with WAF
+- CI/CD support, IDE tool integration, can deploy from things like dropbox, deployment slots allows you to stage deployments
+- Service plans reflect the physical resources for your app
+- Free and shared share hardware resources with other apps, can’t scale out
+- Everything else is dedicated compute, can scale
+- Isolated provide additional network isolation and more scale out opportunities
+- Create for specific application
+- Deploy app services to support the application
+- Do not use a single plan for every web app
+- Combine app services vs mass VM creation
+- Combine other services in the same resource group
+- App service environment is a fully isolated environment
+- For high-performance apps, high cpu and / or memory
+- Individual or multiple services plans
+- 2 ways to deploy, internal or external for NLBs
+- May take a few hours to spin up
+- App insights gives some monitoring tools
+- Can deploy right from Visual Studio
+- There are several management tools
+- Management portal, kudu, and visual studio, powershell, and cli
+- Free and shared app uses quotas that are refreshed every 5 minutes and daily
+- CPU quotas will stop the app once met
+- Memory results in the application being restarted
+- Bandwidth will result in app stopping
+- Filesystem means that writes will fail
+- There are app logs and web server logs
+- Somewhat similar to event viewer and logs on a server
+- Connection strings can be set per slot, it’s a variable instead of a file and is secure as a result
+- You can map handlers to extensions so they are handled in a specific way
+- ARR affinity associates cookies with web app services (sticky sessions?)
+- Deployment slots can reduce risk and increase speed of deployment
+- Can reverse back if needed
+- Not all settings are swapped, for an example publishing endpoints, ssl, domain names, scale settings, or webjob scheduler
+### Design and Develop Apps That Run In Containers
+- You do need some mechanism for running containers, so you will need to install docker and git for windows
+- You need to prepare an application for AKS (azure kubernetes service)
+- Docker compose is a way to automate docker builds
+- Docker-compose up -d builds the docker from the docker hub
+- Azure Container Registries can have docker images pushed into them
+- Need the Azure CLI
+- Az acr create --resource-group azcontainers --name containersexample --sku basic 
+- A kubernetes cluster runs a bunch of containers to handle loads
+- You can split off some of the containers as a “dev space”
+### Server Migrations
+- Azure migrate helps you assess on prem workloads for migration
+- Helps sizing based on historical performance
+- Cost estimation
+- Dependency mapping to visual dependencies to plan migration waves
+- There are some limitations:
+    - Vmware only
+    - Hyper v needs ASR deployment planner
+    - Up to 1500 VM per assessment
+    - Up to 20 projects per subscription
+    - Only in the US
+- There is a comfort buffer to factor for issues such as seasonal usage, short performance history
+- Default comfort setting is 1.3x
+- Requires port 443
+- Migration projects is the name of the Azure section
+- For vmware, you get an .ova file to deploy to vsphere to deploy a collector appliance
+- You then create the collector VM
+- You then sync the VM with the project via project credentials
+- Assessment properties allows you to modify what your targets are for the purposes of generating an estimate
+- ASR allows you to replicate to Azure from on-prem, as well as azure to azure, can use for automation and orchestration. 
+- There are replication frequencies as 30 seconds, 5 minutes, 15 minutes
+- VMWare to Azure Recovery
+- Converts system to VHD, uploads to Azure, migration completed from recovery vault
+- You need to prepare azure > prepare system > prepare migration
+- Need to verify account permissions, create storage account, create recovery services vault, and set up an azure network
+- Provides a way to test failover 
+### Automation
+- VM Image requiring sysprep
+- VM image is called “capture”
+- You can have a resource groups for just images
+- Images can include things like extensions and agents and then be used as a template
+- DSC is a configuration management like Chef or ansible
+- Puppet, chef, and powershell are provided by azure
+- PowerShell can handle configurations, resources, and logical configuration manager
+- You need a powershell desired state configuration extension on the VM
+- You can enable a custom script extension to execute tasks without logging into the vm
+- No credentials needed to log in, does not need internet, simple to implement
+- Does need to be enabled, may be slow
+- You need to know these commands:
+- ARM templates allow you to apply infrastructure as code
+- JSON file to deploy infrastructure, ARM is the mechanism
+- You can get templates from the Azure portal
+- Arm Template files describe the configuration with JSON
+- You can have an optional parameters file 
+- Deployment scripts like powershell that take the template and deploy it
+- You can link templates together either inline or to an external set
+- You can use ARM to copy resources in a loop
+- You can save a deployment as an ARM template
+- A runbook with Azure Automation is for automated workflows
+- Run As account is for creating service accounts to execute runbooks
+### Serverless Computing
+- Serverless computing is the abstraction of hardware
+- Only pay for what you use
+- Azure Functions, Logic Apps, and Event Grid are the main platforms in Azure
+- Azure Functions supports C#, F#, JavaScript, Python, and Java
+- Pay per use in consumption plan or app service plan
+- Integrated security with OAUTH providers
+- Code in portal, or deploy via devops
+- Logic Apps is a workflow engine to orchestrate and stitch together functions and services
+- Visualize design, build, and automate
+- OMS workspace = log analytics
+- Logic apps is somewhat similar to IFTTT
+- Azure Function app names need to be globally unique
+- Windows and Linux apps are supported
+- Consumption plan is Pay as you go
+- App Service Plan is the same as your web service plans you may have out there
+- Runtime stacks are Java, .net, and JavaScript
+- Linux lets you deploy docker or code
+- App insights offer monitoring and telemetry of applications
+- Event Grids are sent events and determines which services get to deal with said events
+- Event grid schema
+- Cloud event schema is a json schema 
+- AzureEventGridViewer lets you view events coming into the grid
+- A topic is the “user” facing end of the event grid that events are sent to
+- This is not heavily covered in the exam due to being more developer focused
+- You can use powershell to send messages to test the grid
+- Event hubs are where you can push a lot of events and then other services can pick them up from the hub
+- Great for simulation tools
+- You can set how the throughput scales up and down to deal with events coming in
+### Governance and RBAC Controls
+- Role Based Access Control (RBAC) controls access to Azure resources
+- Kind of like AD
+- Built in roles are Owner, Contributor (can't grant access), reader, others
+- Each tenant can have up to 2000 roles
+- You can use actions and not actions
+- Azure Policies help you to enforce governance in Azure
+- You can either use custom code or built in policies
+- Assigned to subscriptions or resource groups
+- For an example, you can restrict what types of VM’s are available, or regions that you can deploy in
+- Policy templates are in a json notation
+- Resource locks allow for a layer of protection before a resource is deleted, kind of like when you remove a VM from EC2 in AWS
+- Can be done at the Resource Group level
+- DNS instance is made in a DNS zone
+- You can set up a publicly facing DNS server, utilizing private IP
+- All resources in a vnet can communicate to the itnernet by default
+- Private Ip is SNAT by Azure
+- Outbound connectivity can be restricted
+- SNAT = source net address translation
+### Supplementary
+- For azure files, create a new storage account
+- In the storage account, you can create a file share in Files
+- You can get premade connection scripts in “Connect” in the hamburger menu
+- Azure File Sync can be used to cache files closer to their data centers
+- Prereqs require file sync and file share to be in the same region
+- You need a Windows server set up in azure with Azure file sync set up
+- IE enhanced security config needs to be turned off
+- You may need to install AzureRM with Install-Module -Name AzureRM
+- Install can be done via powershell
+- A sync group is like a drive / folder ? 
+- You will need to add a server endpoint, like a registered server
+- You define a path to the temporary path
+- You can enable or disable Cloud Tiering
