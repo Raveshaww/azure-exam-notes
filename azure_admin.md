@@ -1,0 +1,157 @@
+# Azure Admin
+Rough notes from when I took Azure Admin exam
+### Identity
+- Each subscription can only trust one AAD tenant	
+### Governance
+- Root access to the root management group is not granted by default
+- Initiatives are one or more policies put together
+- Policies can be used to do things like copying tags from a parent resource
+- Policies can either be set to “audit” or “deny”
+- Cost allocation is like a “charge back”, and can be used to charge a certain other tag or RG for the use of another RG or Tag’s resources
+- Resource graph explorer can let you query your resources for things like “unassigned public IPs”
+- Policies will not deallocate existing resources
+- Administrative units are like GPO, but you can modify attributes of the group without giving control of the group
+- You can restore a deleted user if done within 30 days of deletion
+- The inheritance order for scope is Management group, Subscription, Resource group, Resource. For example, if you assigned a Contributor role to a group at the - Subscription scope level, it will be inherited by all Resource groups and Resources.
+### Resiliency
+- Async replication is best for long distances, sync replication is best for situations where the delay in an ack being sent to a write isn’t going to affect performance - all that much
+- Fault domains are the single “rack” in an availability set 
+- Proximity placement groups force services to be physically located in the same zone for latency and not resiliency 
+- Zonal means it’s only applied to one AZ, but you can pick which zone
+- Traffic Manager is a load balance based on DNS, an d can use a whole bunch of metrics to determine the best resource for a request
+- Front Door gives you an anycast IP that’s available on all of those resources, selecting whatever is closest to them. Somewhat similar to a CDN
+- Global load balancer
+### Storage
+- No Storage Area networks in Azure (mostly)
+- Containers in one storage account don’t need to be replicated to the same target storage account (object level replication)
+- You can set it to only copy only certain types of data, like just text files or png
+- All cross region replication is async due to performance
+- Generally always pick stroageV2 for standard tier SA
+- Premium is required for things with more features, like blobs for NFS / SMB
+- Without object level replication, you can only ever replicate to the region pair
+- Some premium storage options are provisioned based in regards to cost, rather than “straight consumption” (Think like VM disks)
+- Always a flat namespace, however
+- Block blobs add Azure Data Lake gen2 on top, which does give it a hierarchical namespace
+- VM disks use page blobs for random R/W performance
+- Append blobs are great for logs
+- Tables are really about key values
+- Tables are broken into partitions
+- There are two types of SAS keys: service and account
+- Account lets you access many storage accounts
+- Service is just a single SA
+### Networking
+- Vnets can’t have multiple address spaces if already peered
+- Subnets naturally span AZ
+- X.x.x.2 and x.x.x.3 are always reserved for DNS purposes
+- In other words, you always lose 5 addresses in a subnet in Azure
+- OS use DHCP, Azure assigns the IP
+- You cannot have two nics in different vnets, but you can in different subnets
+- You always need IPv4 addresses
+- Ipv6 subnets will always be /64
+- You don't need a public IP to make a request outbound to the net
+- If you have a load balancer, your outbound traffic will go through that
+- Express route connections can hairpin via the meet me location for vnet-to-vnet if using s2s vpn
+- Peers are not transitive by default
+- Azure virtual wan can make it transitive 
+- This can also be done via route tables
+- Peering can also allow you to use one express route for multiple vnets
+- Microsoft peering will let you connect to private endpoints of services via express route (maybe s2s?)
+- You can restrict tablets within a vnet with a user defined route table, or NSG, or application security groups and service tags
+- Service tags essentially act as a form of DNS name in this scenario
+- App security groups are like NSG, but act via tags and not IP / subnet
+- To make a subnet known to a service, you have to deploy a service endpoint to that subnet
+- Service endpoint policies can force a subnet to only talk to a service via specific endpoints
+- Azure Private Link makes a service completely unavailable from the “public” web
+- Azure load balancer is not multisite, buit App gateway is
+- Network interfaces will always default to the subnet’s NSG if one is not specifically selected for the interface
+### VM / VMSS
+- The first VM you create should be the largest / most exotic when concerning placement groups, to help make sure all of your - systems are in the same stamps
+- You can turn off caching on a disk, so data writes directly to the disk
+- Live migrations are a thing when the underlying hypervisor is getting updated
+- 169.254.169.254 is a special IP address that you can use to query for maintenance info for a specific VM, from the VM
+- Dedicated hosts or isolated VMs means you can pick an Azure maintenance window
+- Azure Stack Hub is kinda like a mini on-prem Azure. It doesn’t do everything Azure does, but it’s consistent with what Azure does
+- SAP HANA has a special bare metal config
+- By default, VMSS will overprovision in case of failure when provisioning, but it doesn’t incur cost while it’s doing this
+- This can be disabled
+- During the scale in process, you can set up something for a termination notification. 
+- This can be used to automate processes like removing the VM from a domain
+- You can protect specific VMs in a scale set scale in or all scale set actions
+- You can move a VM to a new subscription if you move all of the related networking resources
+### Application services
+- Cgroups = controller groups
+- Decides what a container can use
+- If two container images share the same “layer” as part of its container, it will only be stored once
+- Hyper v containers contain an isolated kernel
+- Azure container services is more for burst scenarios or basic workloads
+- K8s has a database to store data to run things
+- It also has an api server to act as an interface
+- Kublets are part of a system pool that talks with the api server. Kind of like an agent
+- Kubeproxy is also on each worker node for networking
+- K8s actually doesn’t super care about containers, it runs pods
+- Sidecars help out the container in the pod
+- You are responsible for updating k8s
+- You can have spot containers
+- CNI = container network interface
+- App service plan are for API
+- Containers in app service plans can help handle oddball dependencies
+- Autoscale is in standard and above plans
+- You can stage a new version upgrade or rollback by using deployment slots
+- Azure functions can run inside app service plans
+- Logic apps are graphical based orchestration of business logic
+- It’s kind of like IFTT
+### Monitoring and security
+- RACI stands for “Responsible, Accountable, Consulted, Informed” respectively 
+- Activity logs and service health logs are stored for 90 days at the subscription level
+- A lot of monitor is agent-less
+- Agents could actually be on prem or on another cloud entirely
+- App insights can help generate data for monitoring without much in the way of code changes
+- Not everything can / will serve to the event store, i.e. HDInsight or AKS
+- You can use a rest API to send stuff along, too
+- You can send it to a storage account for cheap storage and long term retention
+- You can send it to event hub. This is really good for things like Splunk
+- Azure Monitor Logs (also known as Log Analytics) as a super version of Splunk
+- 2 year max retention, but otherwise configurable
+- Cost on ingestion and for storage
+- You can export data from AML to Event Hub or storage on a real time or hourly basis respectively
+- Insights will take data from different sources and create a curated view
+- Available for VM’s, AKS, db products, etc
+- Insight data can come from either a workbook or custom solution, though those often have workbooks as child objects
+- Workbooks need the user to have permissions for all of the underlying data sources
+- Uses a query language called KQL, but otherwise sql-like
+- For things like CPU usage, you can set dynamic alerts so it will use machine learning to figure out what’s normal and not worth - alerting
+- Azure Defender used to be called Azure Security Center Standard
+- Azure Defender can really help with regulatory compliance
+- Defender alerts can be sent to Azure Sentinel
+- Activity logs are kept for 90 days.
+### Databases
+- Business critical SQL server DB use local storage (4 of them)
+- For managed instances, you need to set up a second MI yourself and then setup HA for geo redundancy
+- Elastic pool allows you to have a provisioned resource for databases, but allow the databases to dynamically use that pool as - they need to at different times
+- Serverless is only vcore and general purpose
+- Autopause will pause the database if it’s not really doing anything for an hour or so, and can start back up but this does incur - a bit of a delay
+- Temp db is on a local ssd
+- Limit of 4tb databases
+- You can have multiple read only db in hyperscale
+- Hyperconverged lets you do 100tb databases, but have a fairly different architecture
+- Once you convert to hyperscale, you can’t go back
+- Serverless is per second billing
+- With long term retention, you can keep data up to 10 years
+- Flexible servers give you more flexibility over the config than what you would get with the container-based configs
+- You can also pause the database when not needed
+- You can also use burstable vms
+### To review
+- Service health alerts are an event tracking pool that let you track active events like ongoing 
+- service issues, planned maintenance and health advisories
+- Containers run in pods
+- Kubelet - the management agent that runs on a node
+- Kubenet -  IP address for the nodes, which then give network access to containers via NAT
+- Azure container interface -  IP address for the containers
+- Azure Firewall -
+- Azure log analytics - ingests data (logs) from other services, can also be used to parse metrics
+- Alert rules can be configured from any source and triggers an alert group, which does the action
+- (If match this rule, do this alert group)
+- ARM  / fabric level > subscription activity log
+- Resources - metrics - Azure monitoring metrics
+- Expressroute premium is global
+- Network virtual appliances can be cheaper than Microsoft’s VGW
