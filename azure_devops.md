@@ -1,6 +1,5 @@
 # Preface
 Working through John Savill's DevOps Master Class, A Cloud Guru, and some additional material via Microsoft Learn. 
-# Notes
 ### Foundation
 - Things like patching OS and whatnot don't really bring value to the org, hence why they tend to be avoided in DevOps
 - SCRUM always contains **only** pull motions

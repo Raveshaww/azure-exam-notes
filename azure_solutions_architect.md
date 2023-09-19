@@ -1,5 +1,5 @@
 # Azure Solutions Architect
-Rough notes from when I was going to take Azure Solutions Architect Exam
+Rough notes from when I was planning to take Azure Solutions Architect Exam
 ### Azure Fundamentals:
 - Azure Account Hierarchy
     - Azure Enterprise
@@ -58,7 +58,7 @@ Rough notes from when I was going to take Azure Solutions Architect Exam
 - Join other tables and workspaces using “union”
 - You have to provision a LogAnalytics workspace, kind of like a VM or other managed service
 - You can automatically install monitoring agents via policies in the security center
-- If you go to Azure Activity Log to gather logs from a subcription
+- If you go to Azure Activity Log to gather logs from a subscription
 - In advanced settings > data you can define what data you capture
 - Analytics view is better for more advanced multi-line queries
 - Log Search view is better for basic queries and learning
@@ -174,8 +174,8 @@ Rough notes from when I was going to take Azure Solutions Architect Exam
 - You can type in a disk size, but it will pick the underlying correct disk
 - Disk Caching will improve the performance of VHD
 - Uses local ram and SSD on underlying host
-- Available on standard and premiumn disk
-- Read-only caching improves latency and may gain higher IOP{S
+- Available on standard and premium disk
+- Read-only caching improves latency and may gain higher IOPS
 - Read-write means you have a proper way to write data from cache to persistent disk
 - May need to turn on host caching in pwsh
 - Set-AzureRMVMDataDisk -VM vm - Name datadisk -Caching ReadWrite | Update-AzureRMVM
@@ -250,7 +250,7 @@ Rough notes from when I was going to take Azure Solutions Architect Exam
 - Often the same as an O365 directory service
 - Can sync with on-prem AD
 - It’s in “Azure Active Directory” in Azure
-- An example of an initial domain name is like routeware.onmicrosoft.com
+- An example of an initial domain name is like domain.onmicrosoft.com
 - By default, new accounts / directories don’t have access to resources
 - Subscriptions can only be tied to one domain / directory
 - There are role and administrator created automatically that you can use

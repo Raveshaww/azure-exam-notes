@@ -1,5 +1,5 @@
 # Azure Admin
-Rough notes from when I took Azure Admin exam
+Rough notes from before I took the Azure Admin exam
 ### Identity
 - Each subscription can only trust one AAD tenant	
 ### Governance
@@ -26,7 +26,7 @@ Rough notes from when I took Azure Admin exam
 - Containers in one storage account don’t need to be replicated to the same target storage account (object level replication)
 - You can set it to only copy only certain types of data, like just text files or png
 - All cross region replication is async due to performance
-- Generally always pick stroageV2 for standard tier SA
+- Generally always pick storageV2 for standard tier SA
 - Premium is required for things with more features, like blobs for NFS / SMB
 - Without object level replication, you can only ever replicate to the region pair
 - Some premium storage options are provisioned based in regards to cost, rather than “straight consumption” (Think like VM disks)
@@ -62,7 +62,7 @@ Rough notes from when I took Azure Admin exam
 - To make a subnet known to a service, you have to deploy a service endpoint to that subnet
 - Service endpoint policies can force a subnet to only talk to a service via specific endpoints
 - Azure Private Link makes a service completely unavailable from the “public” web
-- Azure load balancer is not multisite, buit App gateway is
+- Azure load balancer is not multisite, but App gateway is
 - Network interfaces will always default to the subnet’s NSG if one is not specifically selected for the interface
 ### VM / VMSS
 - The first VM you create should be the largest / most exotic when concerning placement groups, to help make sure all of your - systems are in the same stamps

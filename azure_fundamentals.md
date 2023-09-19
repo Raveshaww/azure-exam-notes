@@ -1,5 +1,5 @@
 # Azure Fundamentals
-Rough notes from when I took Azure Fundamentals exam
+Rough notes from before I took the Azure Fundamentals exam
 ### Notes
 - Availability set = protection against rack-level failure, not data center
 - Storage accounts always have three copies of that data
@@ -18,7 +18,7 @@ Rough notes from when I took Azure Fundamentals exam
     - All get support forums, 24/7 billing help, online self help, service health, and azure advisor
     - Basic - just gets the above
 - Azure blueprints are templates for creating Azure resources. Kind of like a quick template to cover -all- of the services, - policies, RBAC
-- Azure vm sla - premiumd or ultra managed disks provide a better sla, not all managed disks 
+- Azure vm sla - premium or ultra managed disks provide a better sla, not all managed disks 
 - Azure logic apps are a way to connect various systems to schedule, automate, and orchestrate
 - Azure ddos - everything has it to an extent, premium provides more reporting
 - Azure activity logs
